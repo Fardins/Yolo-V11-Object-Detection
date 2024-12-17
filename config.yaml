@@ -1,0 +1,7 @@
+path: ./data  # Base directory for the dataset
+train: images/train  # Training images
+val: images/val      # Validation images
+
+# Class names
+names:
+  0: ant
