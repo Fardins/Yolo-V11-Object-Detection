@@ -7,7 +7,7 @@ import subprocess
 from datetime import datetime
 
 st.title("Cat & Dog Detection Using YOLOv11")
-st.write("Upload a video to detect objects:")
+st.write("Upload a video containing Cat & Dog or choose a sample video to detect objects:")
 
 @st.cache_resource
 def load_model():
@@ -16,14 +16,39 @@ def load_model():
 
 model = load_model()
 
-uploaded_file = st.file_uploader("Upload a Video", type=["mp4", "avi"])
+# Dropdown for selecting a sample video
+sample_videos = {
+    "Sample Cat Video-1": "./input/cat.mp4",
+    "Sample Cat Video-2": "./input/cat2.mp4",
+    "Sample Dog Video-1": "./input/dog.mp4",
+    "Sample Dog Video-2": "./input/dog2.mp4",
 
+}
+
+selected_sample_video = st.radio("Choose a sample video:", ["None"]+list(sample_videos.keys()))
+
+# Display video previews based on the selected sample
+if selected_sample_video != "None":
+    st.write(f"Preview of {selected_sample_video}:")
+    st.video(sample_videos[selected_sample_video])
+else:
+    st.info("Select a video to preview it.")
+
+uploaded_file = st.file_uploader("Upload a Video Containing Dog & Cat", type=["mp4", "avi"])
+
+
+# Determine the video path based on user input
+video_path = None
 if uploaded_file:
-    # Save uploaded video to a temporary file
     with tempfile.NamedTemporaryFile(delete=False, suffix=".mp4") as temp_file:
         temp_file.write(uploaded_file.read())
         video_path = temp_file.name
+elif selected_sample_video != "None":
+    video_path = sample_videos[selected_sample_video]
 
+
+if video_path:
+    st.write("Processing video...")
     cap = cv2.VideoCapture(video_path)
 
     # Generate a unique name for the output file using a timestamp
