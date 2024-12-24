@@ -3,7 +3,7 @@ import subprocess
 import sys
 
 # Get the path to the FFmpeg executable
-ffmpeg_path = get_ffmpeg_exe()
+ffmpeg_path = r"imageio_ffmpeg\binaries\ffmpeg-win64-v4.2.2.exe"
 
 # Get input and output video paths from command-line arguments
 input_video_path = sys.argv[1]
